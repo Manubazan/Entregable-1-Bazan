@@ -1,0 +1,25 @@
+*{ 
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box; 
+}
+body { 
+    font-family: Arial, sans-serif; 
+    background-color: #f4f4f4; 
+    color: #333; 
+}   
+h1, h2 { 
+    color: #af4c4c; 
+    display: flex;
+    justify-content: center;
+}   
+button { 
+    background-color: #6e1c1c; 
+    color: rgb(10, 10, 10); 
+    border: darkblue 2px solid;
+    font-size: 16px;
+    padding: 10px 20px; 
+    border-radius: 5px;
+    cursor: pointer; 
+   
+}
