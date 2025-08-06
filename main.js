@@ -1,59 +1,83 @@
-// variables, constantes y usuario
 const productos = ["Laptop", "Celular", "Tablet", "Auriculares"];
-let carrito = [];
+let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
 let usuario = "";
 
-  // Función principal para iniciar el simulador
+const nombreInput = document.getElementById("nombreUsuario");
+const comenzarBtn = document.getElementById("comenzarBtn");
+const nombreMostrado = document.getElementById("nombreMostrado");
 
-function iniciarSimulador() {
-  alert("Bienvenido al simulador de compras");
-  usuario = prompt("¿Cuál es tu nombre?");
-  
-  if (!usuario) {
-    alert("No ingresaste un nombre. Finalizando simulador.");
+const contenedorProductos = document.getElementById("contenedorProductos");
+const listaProductos = document.getElementById("listaProductos");
+const contenedorCarrito = document.getElementById("contenedorCarrito");
+const listaCarrito = document.getElementById("listaCarrito");
+const vaciarCarritoBtn = document.getElementById("vaciarCarrito");
+
+comenzarBtn.addEventListener("click", () => {
+  const nombre = nombreInput.value.trim();
+  if (nombre === "") {
+    alert("Por favor, ingresá tu nombre.");
     return;
   }
 
-  alert(`Hola, ${usuario}. Vamos a comprar.`);
+  usuario = nombre;
+  nombreMostrado.textContent = usuario;
+  contenedorProductos.classList.remove("oculto");
+  contenedorCarrito.classList.remove("oculto");
 
-  let seguirComprando = true;
+  mostrarProductos();
+  renderizarCarrito();
+});
 
-  while (seguirComprando) {
-    console.log("Productos disponibles:");
-    for (let i = 0; i < productos.length; i++) {
-      console.log(`${i + 1}. ${productos[i]}`);
-    }
+// Mostrar lista de productos con botón "Agregar"
+function mostrarProductos() {
+  listaProductos.innerHTML = "";
 
-    let seleccion = prompt("Elige un producto por número (1 a 4):");
-
-    let indice = parseInt(seleccion) - 1;
-
-    if (indice >= 0 && indice < productos.length) {
-      carrito.push(productos[indice]);
-      alert(`${productos[indice]} ha sido agregado a tu carrito.`);
-    } else {
-      alert("Selección inválida. Intenta de nuevo.");
-    }
-
-    seguirComprando = confirm("¿Deseas agregar otro producto?");
-  }
-
-  mostrarResumen();
+  productos.forEach((producto) => {
+    const li = document.createElement("li");
+    li.innerHTML = `
+      ${producto}
+      <button onclick="agregarAlCarrito('${producto}')">Agregar</button>
+    `;
+    listaProductos.appendChild(li);
+  });
 }
 
-// resumen carrito 
-function mostrarResumen() {
-  if (carrito.length === 0) {
-    alert("No compraste nada.");
-    return;
-  }
+// Agrega un producto al carrito
+function agregarAlCarrito(producto) {
+  carrito.push(producto);
+  guardarCarrito();
+  renderizarCarrito();
+}
 
-  let resumen = `Gracias por tu compra, ${usuario}.\nHas comprado:\n`;
+// Renderiza el carrito en pantalla
+function renderizarCarrito() {
+  listaCarrito.innerHTML = "";
 
-  for (let producto of carrito) {
-    resumen += `- ${producto}\n`;
-  }
+  carrito.forEach((item, index) => {
+    const li = document.createElement("li");
+    li.innerHTML = `
+      ${item}
+      <button onclick="eliminarDelCarrito(${index})">Eliminar</button>
+    `;
+    listaCarrito.appendChild(li);
+  });
+}
 
-  alert(resumen);
-  console.log("Compra finalizada:", carrito);
+// Elimina un producto del carrito
+function eliminarDelCarrito(indice) {
+  carrito.splice(indice, 1);
+  guardarCarrito();
+  renderizarCarrito();
+}
+
+// Vaciar carrito
+vaciarCarritoBtn.addEventListener("click", () => {
+  carrito = [];
+  guardarCarrito();
+  renderizarCarrito();
+});
+
+// Guardar en localStorage
+function guardarCarrito() {
+  localStorage.setItem("carrito", JSON.stringify(carrito));
 }

@@ -7,8 +7,23 @@
     <title>Simulador Interactivo</title>
   </head>
   <body>
-    <h1>Simulador de carrito de compras</h1>
-    <button onclick="iniciarSimulador()">Dale play</button>
+    <h1>🛒 Simulador de carrito de compras</h1>
+
+    <div class="usuario">
+      <input type="text" id="nombreUsuario" placeholder="Ingresa tu nombre" />
+      <button id="comenzarBtn">Comenzar</button>
+    </div>
+
+    <div id="contenedorProductos" class="oculto">
+      <h2>Productos disponibles</h2>
+      <ul id="listaProductos"></ul>
+    </div>
+
+    <div id="contenedorCarrito" class="oculto">
+      <h2>Carrito de <span id="nombreMostrado"></span></h2>
+      <ul id="listaCarrito"></ul>
+      <button id="vaciarCarrito">Vaciar carrito</button>
+    </div>
 
     <script src="main.js"></script>
   </body>
